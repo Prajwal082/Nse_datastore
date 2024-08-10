@@ -15,7 +15,7 @@ class Utils():
 
         self.logger.info("Logging setup done....!")
 
-    def get_config(self,config:Dict, key:str) -> Any:
+    def get_config(self,config_data:Dict, key:str) -> Any:
         '''
             This Recursive Function will  fetch the value 
             by passing the appropriate key for the given input JSON/dict 
@@ -26,14 +26,14 @@ class Utils():
         '''
         list_of_keys = key.split('.')
         
-        if list_of_keys[0] in config.keys():
-            config = config[f'{list_of_keys[0]}']
+        if list_of_keys[0] in config_data.keys():
+            config_data = config_data[f'{list_of_keys[0]}']
         else:
             raise KeyError("Invalid Key...!")
 
         if len(list_of_keys)==1:
-            return config
+            return config_data
         
         list_of_keys = '.'.join(list_of_keys[1:])
 
-        return self.get_config(json,list_of_keys)
+        return self.get_config(config_data,list_of_keys)
