@@ -1,4 +1,8 @@
-./__pycache__/
-./raw/
-./venv/
-./.vscode/
+__pycache__/
+raw/
+venv/
+.vscode/
+
+*.csv
+
+*.pyc
