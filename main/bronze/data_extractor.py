@@ -12,7 +12,7 @@ from bronze.config.apiconfig import config
 
 class Nse(Utils):
 
-    def __init__(self,config:dict) -> None:
+    def __init__(self,config:Dict[str,Any] = config) -> None:
         super().__init__()
 
         self.config = config
