@@ -1,8 +1,15 @@
-__pycache__/
-raw/
-venv/
-.vscode/
+/__pycache__/
+/raw/
+/venv/
+/.vscode/
 
 *.csv
-
 *.pyc
+
+# Scala
+/scala/target/
+/scala/project/target/
+/scala/project/project/
+/scala/.bloop/
+/scala/.metals/
+/scala/.idea/
