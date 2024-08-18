@@ -2,6 +2,7 @@
 /raw/
 /venv/
 /.vscode/
+/.metals/
 
 *.csv
 *.pyc
