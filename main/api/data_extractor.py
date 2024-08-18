@@ -8,7 +8,7 @@ from collections import defaultdict
 from datetime import date, timedelta
 
 from utils.services import Utils
-from bronze.config.apiconfig import config
+from api.config.apiconfig import config
 
 class Nse(Utils):
 
