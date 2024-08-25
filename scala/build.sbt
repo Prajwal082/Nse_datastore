@@ -8,3 +8,5 @@ libraryDependencies ++= Seq(
     "org.apache.spark" %% "spark-sql" % "3.5.1",
     "io.delta" %% "delta-spark" % "3.2.0"
 )
+
+javaOptions += "-Djava.library.path=%HADOOP_HOME%\\bin"
