@@ -58,25 +58,50 @@ object data_processor extends App {
          pathsDF
       }
 
-      val df = get_files(source_path = src_file_path)
 
-      df.rdd.repartition(4).foreachPartition {
-         rows => {
-               val partitionId = TaskContext.getPartitionId
-               println("Partition Id: " + partitionId)
-               rows.foreach {
-                  file => {
+      def runCopy(src_df:DataFrame) ={
+            src_df.rdd.repartition(4).foreachPartition {
+            rows => {
+                  val partitionId = TaskContext.getPartitionId
+                  println("Partition Id: " + partitionId)
+                  rows.foreach {
+                     file => {
 
-                  val src_path:String = file.get(0).asInstanceOf[String]
+                     val src_path:String = file.get(0).asInstanceOf[String]
 
-                  val fromPath = new Path(src_path)
-                  val fromFs = FileSystem.getLocal(conf)
-                  val toFs = FileSystem.get(conf)
+                     val fromPath = new Path(src_path)
+                     val fromFs = FileSystem.getLocal(conf)
+                     val toFs = FileSystem.get(conf)
 
-                  FileUtil.copy(fromFs, fromPath, toFs, hdfs_destination_path, false, conf)
-                  }
+                     FileUtil.copy(fromFs, fromPath, toFs, hdfs_destination_path, true, conf)
+                     }
 
-               } 
+                  } 
+               }
             }
+
+         }
+      // runCopy(get_files(source_path = src_file_path))
+     
+      val fs = FileSystem.get(conf)
+
+      val status = fs.listStatus(hdfs_destination_path)
+
+     // Iterate through the files and print their paths
+      status.foreach { status =>
+         if (status.isDirectory) {
+               println(s"Processing File: ${status.getPath}")
+
+               val  df = (spark.read
+                              .format("json")
+                              .option("multiline",true)
+                              .option("inferschema",true)
+                              .option("mode","PERMISSIVE")
+                              .load(s"${status.getPath}")
+                              )
+               println(f"Writing to Delta for" + s"${status.getPath}".split("/").last)
+               df.write.format("delta").mode("overwrite").save("hdfs://localhost:9000/process/" + s"${status.getPath}".split("/").last)
+         }
       }
-   }    
+      
+}    

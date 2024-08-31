@@ -1,5 +1,5 @@
 scalaVersion := "2.13.14"
-name := "dataprocessor"
+name := "test"
 version := "1.0"
 
 libraryDependencies ++= Seq(
@@ -10,3 +10,5 @@ libraryDependencies ++= Seq(
 )
 
 javaOptions += "-Djava.library.path=%HADOOP_HOME%\\bin"
+logLevel := Level.Error
+
